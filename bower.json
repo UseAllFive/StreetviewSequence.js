@@ -1,0 +1,30 @@
+{
+  "name": "StreetviewSequence.js",
+  "version": "0.0.0",
+  "authors": [
+    "Zach Brown <zeebz91@gmail.com>"
+  ],
+  "keywords": [
+    "google",
+    "maps",
+    "street",
+    "view",
+    "api",
+    "streetview",
+    "streetlapse",
+    "sequence",
+    "streetviewsequence",
+    "hyperlapse",
+    "hyperdrive",
+    "legal hyperlapse"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "bower_components"
+  ],
+  "dependencies": {
+    "greensock": "~1.11.5",
+    "jquery": "~2.1.0",
+    "underscore": "~1.6.0"
+  }
+}
