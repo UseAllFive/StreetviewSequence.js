@@ -1,0 +1,88 @@
+<html>
+    <head>
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Streetview Sequence</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Panorama</h3>
+                    <div id="panorama-progress-container">
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </div>
+                    <div id="panorama"></div>
+                </div>
+                <div class="col-md-6">
+                    <h3>Route</h3>
+                    <div id="route-progress-container">
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </div>
+                    <div id="route"></div>
+                </div>
+            </div>
+        </div>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyDBX-55LuU2jwLxHuqqK5PN4o--O-E4SmU"></script>
+        <script src="src/StreetviewSequence.js"></script>
+        <script>
+            //-- Stationary panorama
+            var panorama = StreetviewSequence('#panorama', {
+                duration: 1500,
+                location: new google.maps.LatLng(40.720032,-73.988354),
+                pitchSkewEnd: 90,
+                width: 585,
+                height: 325,
+                key: 'AIzaSyDBX-55LuU2jwLxHuqqK5PN4o--O-E4SmU',
+                loop: true
+            });
+
+            var $panoramaProgressContainer = $("#panorama-progress-container");
+            var $panoramaProgressBar = $panoramaProgressContainer.find('.progress-bar');
+            panorama.progress(function (p) {
+                $panoramaProgressBar.css({width: (p * 100) + '%'});
+            });
+            panorama.done(function (player) {
+                $panoramaProgressContainer.hide();
+                player.play();
+            });
+
+            //-- Route
+            var directionsService = new google.maps.DirectionsService();
+            var directionsRoute = directionsService.route({
+                destination: new google.maps.LatLng(33.8974391098385,-116.6136966801696),
+                origin: new google.maps.LatLng(33.9063,-116.56344000000001),
+                travelMode: google.maps.TravelMode.DRIVING
+            }, function (DirectionsResult, DirectionsStatus) {
+                var routeSequence = StreetviewSequence('#route', {
+                    route: DirectionsResult,
+                    duration: 5000,
+                    key: 'AIzaSyDBX-55LuU2jwLxHuqqK5PN4o--O-E4SmU',
+                    loop: true,
+                    width: 585,
+                    height: 325
+                });
+
+                var $routeProgressContainer = $("#route-progress-container");
+                var $routeProgressBar = $routeProgressContainer.find('.progress-bar');
+                routeSequence.progress(function (p) {
+                    $routeProgressBar.css({width: (p * 100) + '%'});
+                });
+                routeSequence.done(function(player) {
+                    $routeProgressContainer.hide();
+                    player.play();
+                });
+            });
+        </script>
+    </body>
+</html>
